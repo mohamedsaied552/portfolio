@@ -1,41 +1,78 @@
-# Mohamed Saied — Interactive Portfolio
+# 🚀 Mohamed Saied — Interactive 3D Portfolio
 
-A one-page cinematic portfolio built with **Next.js 15**, **React Three Fiber**, **GSAP**, **Framer Motion**, and **Lenis** smooth scroll.
+An immersive, award-inspired 3D portfolio showcasing my work as a **Software Engineer** and **Flutter Developer** through cinematic animations and interactive experiences.
 
-## Run locally
+![Portfolio Preview](public/preview.png)
+
+## ✨ Features
+
+- 🎬 One-page cinematic scrolling experience
+- 🌍 Immersive 3D scenes built with Three.js
+- ⚡ Smooth camera transitions and animations
+- 📱 Fully responsive design
+- 🚀 Optimized performance
+- 🎨 Modern UI with premium visual effects
+- 💼 Interactive showcase of real-world projects
+
+## 🛠️ Tech Stack
+
+- Next.js 15
+- TypeScript
+- React Three Fiber
+- Three.js
+- @react-three/drei
+- GSAP
+- Framer Motion
+- Lenis
+- Tailwind CSS v4
+
+## 📂 Featured Projects
+
+- 🛴 Glider — Smart Scooter Rental Platform
+- 💼 Shoghlany — Job Recruitment Platform
+- 🌊 Underwater ROV
+- 🤖 Robotic Arm
+- 🚗 Smart Parking System
+- 🌦️ Weather Application
+
+## 🚀 Getting Started
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open:
 
-## Build
+```
+http://localhost:3000
+```
+
+## 📦 Production
 
 ```bash
 npm run build
-npm start
+npm run start
 ```
 
-## Customize
+## ⚙️ Customization
 
-| What | Where |
-|------|--------|
-| Bio, links, email | `src/data/contact.ts` |
+| Item | File |
+|------|------|
+| Contact Information | `src/data/contact.ts` |
 | Projects | `src/data/projects.ts` |
 | Skills | `src/data/skills.ts` |
-| Stats & timeline | `src/data/stats.ts` |
-| Site URL (SEO) | `NEXT_PUBLIC_SITE_URL` in `.env.local` |
+| Statistics | `src/data/stats.ts` |
+| SEO URL | `.env.local` |
 
-Update GitHub, LinkedIn, email, and CV path in `contact.ts` before deploying.
+## 🌐 Deployment
 
-## Stack
+Deploy easily on **Vercel** or any Node.js hosting provider.
 
-- Next.js 15 (App Router) · TypeScript · Tailwind CSS v4
-- Three.js · @react-three/fiber · @react-three/drei · postprocessing
-- GSAP · Framer Motion · Lenis · React Icons
+## 📸 Preview
 
-## Deploy
+Add screenshots or a GIF here to showcase the experience.
 
-Works on Vercel or any Node host. Set `NEXT_PUBLIC_SITE_URL` to your production domain for sitemap and Open Graph.
+## 📄 License
+
+This project is licensed under the MIT License.
