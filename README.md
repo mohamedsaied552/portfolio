@@ -6,7 +6,6 @@
 
 An immersive, award-inspired 3D portfolio showcasing my work as a **Software Engineer** and **Flutter Developer** through cinematic animations and interactive experiences.
 
-![Portfolio Preview](public/preview.png)
 
 ## ✨ Features
 
