@@ -1,5 +1,9 @@
 # 🚀 Mohamed Saied — Interactive 3D Portfolio
 
+<p align="center">
+  <img src="./public/preview.png" alt="Portfolio Preview" width="100%" />
+</p>
+
 An immersive, award-inspired 3D portfolio showcasing my work as a **Software Engineer** and **Flutter Developer** through cinematic animations and interactive experiences.
 
 ![Portfolio Preview](public/preview.png)
@@ -57,13 +61,13 @@ npm run start
 
 ## ⚙️ Customization
 
-| Item | File |
-|------|------|
-| Contact Information | `src/data/contact.ts` |
-| Projects | `src/data/projects.ts` |
-| Skills | `src/data/skills.ts` |
-| Statistics | `src/data/stats.ts` |
-| SEO URL | `.env.local` |
+| Item                | File                   |
+| ------------------- | ---------------------- |
+| Contact Information | `src/data/contact.ts`  |
+| Projects            | `src/data/projects.ts` |
+| Skills              | `src/data/skills.ts`   |
+| Statistics          | `src/data/stats.ts`    |
+| SEO URL             | `.env.local`           |
 
 ## 🌐 Deployment
 
