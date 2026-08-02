@@ -7,6 +7,9 @@ export interface Skill {
   orbitRadius: number;
   orbitSpeed: number;
   orbitAngle: number;
+  description: string;
+  yearsOfExperience: number;
+  mainSkills: string[];
 }
 
 export interface Project {

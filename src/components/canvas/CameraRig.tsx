@@ -6,6 +6,8 @@ import * as THREE from "three";
 import { usePortfolio } from "@/components/providers/PortfolioProvider";
 import { CAMERA_POSITIONS } from "@/lib/constants";
 import { lerp, smoothstep, getProjectLocalProgress } from "@/lib/utils";
+import { projects } from "@/data/projects";
+import { skills } from "@/data/skills";
 
 const PROJECT_CAMERAS: Array<{ position: [number, number, number]; lookAt: [number, number, number] }> = [
   { position: [0, 8, 18], lookAt: [0, 0, 0] },
@@ -16,14 +18,23 @@ const PROJECT_CAMERAS: Array<{ position: [number, number, number]; lookAt: [numb
   { position: [0, 5, 12], lookAt: [0, 2, 0] },
 ];
 
+const PROJECT_POSITIONS: Record<string, [number, number, number]> = {
+  glider: [0, 0, 0],
+  shoghlany: [6, 0, -4],
+  rov: [-6, 0, 4],
+  "robotic-arm": [3, 0, 6],
+  "smart-parking": [-3, 0, -6],
+  "weather-app": [0, 0, 8],
+};
+
 export function CameraRig() {
   const { camera } = useThree();
-  const { scrollProgress } = usePortfolio();
+  const { scrollProgress, selectedSkill } = usePortfolio();
   const targetLookAt = useRef(new THREE.Vector3(0, 1, 0));
   const currentLookAt = useRef(new THREE.Vector3(0, 1, 0));
   const breathOffset = useRef(0);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     breathOffset.current += delta * 0.3;
     const breath = Math.sin(breathOffset.current) * 0.08;
 
@@ -31,8 +42,22 @@ export function CameraRig() {
     let targetLook: [number, number, number];
 
     const p = scrollProgress;
+    const activeSkill = skills.find((skill) => skill.id === selectedSkill);
 
-    if (p < 0.08) {
+    if (activeSkill && activeSkill.projectIds.length > 0) {
+      const relatedProjects = projects.filter((project) => activeSkill.projectIds.includes(project.id));
+      const focusPoint = relatedProjects.reduce(
+        (sum, project) => {
+          const position = PROJECT_POSITIONS[project.id] ?? [0, 0, 0];
+          return [sum[0] + position[0], sum[1] + position[1], sum[2] + position[2]] as [number, number, number];
+        },
+        [0, 0, 0] as [number, number, number]
+      );
+      const count = relatedProjects.length || 1;
+      const focus = [focusPoint[0] / count, 0.8, focusPoint[2] / count] as [number, number, number];
+      targetPos = [focus[0] + 3, focus[1] + 8 + breath, focus[2] + 12];
+      targetLook = [focus[0], focus[1], focus[2]];
+    } else if (p < 0.08) {
       const t = smoothstep(0, 0.08, p);
       targetPos = [
         lerp(0, CAMERA_POSITIONS.hero.position[0], t),

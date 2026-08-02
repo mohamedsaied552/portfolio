@@ -615,6 +615,7 @@ body {
   display: flex;
   align-items: center;
   pointer-events: none;
+  touch-action: pan-y;
 }
 
 .project-section {
@@ -625,10 +626,12 @@ body {
   padding: clamp(1.5rem, 5vw, 4rem);
   transition: opacity 0.5s ease;
   pointer-events: none;
+  touch-action: pan-y;
 }
 
 .project-content {
   max-width: 520px;
+  pointer-events: auto;
 }
 
 .project-meta {

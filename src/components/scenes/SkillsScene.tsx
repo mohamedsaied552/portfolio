@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { memo, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text } from "@react-three/drei";
+import { Line, Text } from "@react-three/drei";
 import * as THREE from "three";
+import { projects } from "@/data/projects";
 import { skills } from "@/data/skills";
 import { usePortfolio } from "@/components/providers/PortfolioProvider";
 
@@ -12,9 +13,10 @@ interface SkillOrbProps {
   visible: number;
   onSelect: (id: string) => void;
   isSelected: boolean;
+  isDimmed: boolean;
 }
 
-function SkillOrb({ skill, visible, onSelect, isSelected }: SkillOrbProps) {
+const SkillOrb = memo(function SkillOrb({ skill, visible, onSelect, isSelected, isDimmed }: SkillOrbProps) {
   const groupRef = useRef<THREE.Group>(null);
   const meshRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
@@ -39,7 +41,7 @@ function SkillOrb({ skill, visible, onSelect, isSelected }: SkillOrbProps) {
       const pulse = 1 + Math.sin(state.clock.elapsedTime * 3) * 0.2;
       glowRef.current.scale.setScalar((hovered || isSelected ? 3 : 2) * pulse);
       const mat = glowRef.current.material as THREE.MeshBasicMaterial;
-      mat.opacity = (hovered || isSelected ? 0.3 : 0.1) * visible;
+      mat.opacity = ((hovered || isSelected ? 0.3 : 0.1) * visible) * (isDimmed ? 0.3 : 1);
     }
   });
 
@@ -50,6 +52,7 @@ function SkillOrb({ skill, visible, onSelect, isSelected }: SkillOrbProps) {
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
         onClick={() => onSelect(skill.id)}
+        onPointerDown={() => setHovered(true)}
       >
         <icosahedronGeometry args={[0.25, 1]} />
         <meshStandardMaterial
@@ -59,14 +62,14 @@ function SkillOrb({ skill, visible, onSelect, isSelected }: SkillOrbProps) {
           metalness={0.9}
           roughness={0.1}
           transparent
-          opacity={visible}
+          opacity={visible * (isDimmed ? 0.35 : 1)}
         />
       </mesh>
       <mesh ref={glowRef}>
         <sphereGeometry args={[0.25, 8, 8]} />
         <meshBasicMaterial color={skill.color} transparent opacity={0.1} />
       </mesh>
-      {(hovered || isSelected) && (
+      {(hovered || isSelected || !isDimmed) && (
         <Text
           position={[0, 0.55, 0]}
           fontSize={0.12}
@@ -80,7 +83,7 @@ function SkillOrb({ skill, visible, onSelect, isSelected }: SkillOrbProps) {
       )}
     </group>
   );
-}
+});
 
 interface SkillsSceneProps {
   visible: number;
@@ -90,6 +93,12 @@ export function SkillsScene({ visible }: SkillsSceneProps) {
   const groupRef = useRef<THREE.Group>(null);
   const coreRef = useRef<THREE.Mesh>(null);
   const { selectedSkill, setSelectedSkill } = usePortfolio();
+
+  const activeSkill = useMemo(() => skills.find((skill) => skill.id === selectedSkill) ?? null, [selectedSkill]);
+  const relatedProjects = useMemo(() => {
+    if (!activeSkill) return [];
+    return projects.filter((project) => activeSkill.projectIds.includes(project.id));
+  }, [activeSkill]);
 
   useFrame((state) => {
     if (groupRef.current) {
@@ -144,10 +153,39 @@ export function SkillsScene({ visible }: SkillsSceneProps) {
           key={skill.id}
           skill={skill}
           visible={visible}
-          onSelect={(id) => setSelectedSkill(selectedSkill === id ? null : id)}
+          onSelect={() => setSelectedSkill(selectedSkill === skill.id ? null : skill.id)}
           isSelected={selectedSkill === skill.id}
+          isDimmed={Boolean(selectedSkill && selectedSkill !== skill.id)}
         />
       ))}
+
+      {activeSkill && relatedProjects.length > 0 && (
+        <group>
+          {relatedProjects.map((project, index) => {
+            const angle = (index / Math.max(1, relatedProjects.length)) * Math.PI * 2;
+            const radius = 2.4;
+            const markerPosition: [number, number, number] = [Math.cos(angle) * radius, 0.8, Math.sin(angle) * radius];
+            return (
+              <group key={project.id}>
+                <Line
+                  points={[
+                    new THREE.Vector3(0, 0.2, 0),
+                    new THREE.Vector3(markerPosition[0], markerPosition[1], markerPosition[2]),
+                  ]}
+                  color={project.color}
+                  lineWidth={2}
+                  transparent
+                  opacity={0.6}
+                />
+                <mesh position={markerPosition}>
+                  <sphereGeometry args={[0.08, 12, 12]} />
+                  <meshBasicMaterial color={project.color} transparent opacity={0.8} />
+                </mesh>
+              </group>
+            );
+          })}
+        </group>
+      )}
 
       <ambientLight intensity={0.2} />
       <pointLight position={[0, 5, 0]} intensity={4} color="#00d4ff" distance={20} />

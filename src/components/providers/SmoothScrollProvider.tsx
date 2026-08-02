@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, ReactNode } from "react";
-import Lenis from "lenis";
 import { usePortfolio } from "./PortfolioProvider";
 import { getActiveProjectIndex } from "@/lib/utils";
 import { SECTIONS } from "@/lib/constants";
@@ -10,22 +9,19 @@ interface SmoothScrollProviderProps {
   children: ReactNode;
 }
 
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const { setScrollProgress, setActiveSection, setActiveProjectIndex } = usePortfolio();
 
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 1.5,
-    });
+    const updateScrollState = () => {
+      const scrollTop = window.scrollY || window.pageYOffset || 0;
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = clamp(scrollTop / maxScroll, 0, 1);
 
-    document.documentElement.classList.add("lenis", "lenis-smooth");
-    (window as Window & { __lenis?: Lenis }).__lenis = lenis;
-
-    lenis.on("scroll", ({ scroll, limit }: { scroll: number; limit: number }) => {
-      const progress = limit > 0 ? scroll / limit : 0;
       setScrollProgress(progress);
 
       const section = SECTIONS.find((s) => progress >= s.start && progress < s.end);
@@ -34,20 +30,28 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       }
 
       setActiveProjectIndex(getActiveProjectIndex(progress));
-    });
+    };
 
-    let rafId = 0;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateScrollState();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    updateScrollState();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("load", onScroll, { passive: true });
 
     return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-      document.documentElement.classList.remove("lenis", "lenis-smooth");
-      delete (window as Window & { __lenis?: Lenis }).__lenis;
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("load", onScroll);
     };
   }, [setScrollProgress, setActiveSection, setActiveProjectIndex]);
 
