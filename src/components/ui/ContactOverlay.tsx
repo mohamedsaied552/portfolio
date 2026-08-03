@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope, FaDownload } from "react-icons/fa";
 import { contactLinks, siteInfo } from "@/data/contact";
 import { usePortfolio } from "@/components/providers/PortfolioProvider";
+import { useMemo, useState } from "react";
 
 const iconMap: Record<string, React.ReactNode> = {
   github: <FaGithub />,
