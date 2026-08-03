@@ -32,9 +32,6 @@ const ShoghlanyScene = dynamic(() => import("@/components/scenes/projects/Shoghl
 const ROVScene = dynamic(() => import("@/components/scenes/projects/ROVScene").then((m) => m.ROVScene), {
   ssr: false,
 });
-const RoboticArmScene = dynamic(() => import("@/components/scenes/projects/RoboticArmScene").then((m) => m.RoboticArmScene), {
-  ssr: false,
-});
 const SmartParkingScene = dynamic(() => import("@/components/scenes/projects/SmartParkingScene").then((m) => m.SmartParkingScene), {
   ssr: false,
 });
@@ -102,9 +99,9 @@ function SceneContent() {
   const contactVis = smoothstep(0.84, 0.92, scrollProgress);
 
   const projectVisibilities = useMemo(() => {
-    return Array.from({ length: 6 }).map((_, i) => {
-      const start = 0.32 + i * ((0.88 - 0.32) / 6);
-      const end = start + (0.88 - 0.32) / 6;
+    return Array.from({ length: 5 }).map((_, i) => {
+      const start = 0.32 + i * ((0.88 - 0.32) / 5);
+      const end = start + (0.88 - 0.32) / 5;
       const fadeIn = smoothstep(start - 0.02, start + 0.04, scrollProgress);
       const fadeOut = 1 - smoothstep(end - 0.04, end + 0.02, scrollProgress);
       return fadeIn * fadeOut;
@@ -133,17 +130,13 @@ function SceneContent() {
         visible={projectVisibilities[2] * (selectedSkill && selectedSkill !== "rov" ? 0.35 : 1)}
         localProgress={getProjectLocalProgress(scrollProgress, 2)}
       />
-      <RoboticArmScene
-        visible={projectVisibilities[3] * (selectedSkill && selectedSkill !== "robotic-arm" ? 0.35 : 1)}
+      <SmartParkingScene
+        visible={projectVisibilities[3] * (selectedSkill && selectedSkill !== "smart-parking" ? 0.35 : 1)}
         localProgress={getProjectLocalProgress(scrollProgress, 3)}
       />
-      <SmartParkingScene
-        visible={projectVisibilities[4] * (selectedSkill && selectedSkill !== "smart-parking" ? 0.35 : 1)}
-        localProgress={getProjectLocalProgress(scrollProgress, 4)}
-      />
       <WeatherScene
-        visible={projectVisibilities[5] * (selectedSkill && selectedSkill !== "weather-app" ? 0.35 : 1)}
-        localProgress={getProjectLocalProgress(scrollProgress, 5)}
+        visible={projectVisibilities[4] * (selectedSkill && selectedSkill !== "weather-app" ? 0.35 : 1)}
+        localProgress={getProjectLocalProgress(scrollProgress, 4)}
       />
 
       <ContactScene visible={contactVis} />

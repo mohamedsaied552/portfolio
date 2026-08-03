@@ -34,7 +34,6 @@ An immersive, award-inspired 3D portfolio showcasing my work as a **Software Eng
 - 🛴 Glider — Smart Scooter Rental Platform
 - 💼 Shoghlany — Job Recruitment Platform
 - 🌊 Underwater ROV
-- 🤖 Robotic Arm
 - 🚗 Smart Parking System
 - 🌦️ Weather Application
 

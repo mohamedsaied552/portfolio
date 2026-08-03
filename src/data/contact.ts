@@ -10,7 +10,7 @@ export const contactLinks: ContactLink[] = [
   {
     id: "linkedin",
     label: "LinkedIn",
-    href: "https://linkedin.com/in/mohamedsaied",
+    href: "https://www.linkedin.com/in/mohameed-saieed?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
     icon: "linkedin",
   },
   {

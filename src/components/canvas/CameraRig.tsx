@@ -13,7 +13,6 @@ const PROJECT_CAMERAS: Array<{ position: [number, number, number]; lookAt: [numb
   { position: [0, 8, 18], lookAt: [0, 0, 0] },
   { position: [5, 4, 12], lookAt: [0, 1, 0] },
   { position: [0, 3, 10], lookAt: [0, -2, 0] },
-  { position: [4, 5, 14], lookAt: [0, 2, 0] },
   { position: [0, 12, 20], lookAt: [0, 0, 0] },
   { position: [0, 5, 12], lookAt: [0, 2, 0] },
 ];
@@ -22,7 +21,6 @@ const PROJECT_POSITIONS: Record<string, [number, number, number]> = {
   glider: [0, 0, 0],
   shoghlany: [6, 0, -4],
   rov: [-6, 0, 4],
-  "robotic-arm": [3, 0, 6],
   "smart-parking": [-3, 0, -6],
   "weather-app": [0, 0, 8],
 };
@@ -86,7 +84,7 @@ export function CameraRig() {
       ];
       targetLook = CAMERA_POSITIONS.skills.lookAt;
     } else if (p < 0.88) {
-      const projectIndex = Math.min(Math.floor((p - 0.32) / ((0.88 - 0.32) / 6)), 5);
+      const projectIndex = Math.min(Math.floor((p - 0.32) / ((0.88 - 0.32) / 5)), 4);
       const localP = getProjectLocalProgress(p, projectIndex);
       const cam = PROJECT_CAMERAS[projectIndex];
       const orbitAngle = localP * Math.PI * 0.3;
@@ -98,7 +96,7 @@ export function CameraRig() {
       targetLook = cam.lookAt;
     } else {
       const t = smoothstep(0.88, 1, p);
-      const lastCam = PROJECT_CAMERAS[5];
+      const lastCam = PROJECT_CAMERAS[4];
       targetPos = [
         lerp(lastCam.position[0], CAMERA_POSITIONS.contact.position[0], t),
         lerp(lastCam.position[1], CAMERA_POSITIONS.contact.position[1], t) + breath,

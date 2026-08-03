@@ -2,8 +2,8 @@ import { Project } from "@/types";
 
 export const projects: Project[] = [
   {
-    id: "glider",
-    name: "GLIDER",
+    id: "zakzouka",
+    name: "Zakzouka",
     tagline: "Smart Electric Mobility Platform",
     description:
       "A flagship smart city mobility ecosystem featuring real-time ride tracking, SignalR live updates, QR unlock, GPS routing, wallet dashboard, and charging station network.",
@@ -50,22 +50,6 @@ export const projects: Project[] = [
     ],
     color: "#06b6d4",
     accentColor: "#0891b2",
-  },
-  {
-    id: "robotic-arm",
-    name: "Robotic Arm",
-    tagline: "Industrial Smart Factory",
-    description:
-      "Precision robotic arm automation system with conveyor integration, mechanical animations, and factory floor monitoring.",
-    technologies: ["C", "C++", "Arduino", "Embedded Systems", "IoT"],
-    highlights: [
-      "6-axis arm control",
-      "Moving conveyors",
-      "Factory automation",
-      "Real-time monitoring",
-    ],
-    color: "#f59e0b",
-    accentColor: "#d97706",
   },
   {
     id: "smart-parking",
